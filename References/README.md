@@ -1,6 +1,6 @@
 # References
 
-## Convolutional neural networks
+### Convolutional neural networks
 
 Deep learning
 https://www.deeplearningbook.org
@@ -9,7 +9,7 @@ Stanford CS231n Convolutional neural networks for visual recognition
 http://cs231n.github.io
 http://cs231n.stanford.edu
 
-## Machine learning
+### Machine learning
 
 CMU 10-701 Introduction to machine learning
 http://www.cs.cmu.edu/~10701/index.html
@@ -20,12 +20,12 @@ http://people.csail.mit.edu/dsontag/courses/ml13/
 Stanford CS229 Machine learning
 http://cs229.stanford.edu
 
-## Hardware
+### Hardware
 
 Efficient processing of deep neural networks: a tutorial and survey
 https://arxiv.org/abs/1703.09039
 
-## Math
+### Math
 
 Linear algebra
 https://www.math.ucdavis.edu/~linear/linear-guest.pdf
