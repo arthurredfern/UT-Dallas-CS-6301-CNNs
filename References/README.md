@@ -2,6 +2,9 @@
 
 ### Convolutional neural networks
 
+Convolutional neural networks: theory, implementation and application
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/References/ConvolutionalNeuralNetworks.pdf
+
 Deep learning
 https://www.deeplearningbook.org
 
