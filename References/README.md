@@ -2,14 +2,14 @@
 
 ### Convolutional neural networks
 
-Convolutional neural networks: theory, implementation and application
+Convolutional neural networks: theory, implementation and application  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/References/ConvolutionalNeuralNetworks.pdf
 
-Deep learning
+Deep learning  
 https://www.deeplearningbook.org
 
-Stanford CS231n Convolutional neural networks for visual recognition
-http://cs231n.github.io
+Stanford CS231n Convolutional neural networks for visual recognition  
+http://cs231n.github.io  
 http://cs231n.stanford.edu
 
 ### Machine learning
