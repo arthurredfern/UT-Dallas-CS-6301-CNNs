@@ -1,6 +1,5 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
-### Announcements
-Aug 20 2018  
+### 2018-08-20 Announcement
 Welcome to class!
 
