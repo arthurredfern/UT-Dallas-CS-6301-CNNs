@@ -1,5 +1,21 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
+### Homework
+01 Homework added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Homework/UTDallas_CS6301_CNNs_01Homework.pdf
+
+### Lecture
+02 Linear algebra added (presentation form)  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_02LinearAlgebra.pdf
+
+### Lecture
+01 Introduction added (presentation form)  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_01Introduction.pdf
+
+### Lecture
+001 Introduction removed (document form)  
+002 Linear algebra removed (document form)
+
 ### Lecture
 002 Linear algebra added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNN_002LinearAlgebra.pdf
