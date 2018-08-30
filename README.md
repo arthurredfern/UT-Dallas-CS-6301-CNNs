@@ -1,28 +1,20 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
+### Lecture
+03 Calculus added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_03Calculus.pdf
+
 ### Homework
 01 Homework added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Homework/UTDallas_CS6301_CNNs_01Homework.pdf
 
 ### Lecture
-02 Linear algebra added (presentation form)  
+02 Linear algebra added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_02LinearAlgebra.pdf
 
 ### Lecture
-01 Introduction added (presentation form)  
+01 Introduction added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_01Introduction.pdf
-
-### Lecture
-001 Introduction removed (document form)  
-002 Linear algebra removed (document form)
-
-### Lecture
-002 Linear algebra added  
-https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNN_002LinearAlgebra.pdf
-
-### Lecture
-001 Introduction added  
-https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNN_001Introduction.pdf
 
 ### Advertisement
 **Deep learning with TensorFlow workshop**  
