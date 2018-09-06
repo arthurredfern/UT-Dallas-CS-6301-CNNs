@@ -5,10 +5,10 @@
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Homework/UTDallas_CS6301_CNNs_02Homework.pdf
 
 ### Code
-01 Homework 01 reference added  
+01 Homework reference added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Code/Code01CNNStyle2DConvolution.py
 
-02 Self contained toy training example added
+02 Self contained toy training example added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Code/Code02xNNTraining.py
 
 ### Lecture
