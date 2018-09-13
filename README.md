@@ -1,7 +1,11 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
 ### Lecture
-04 Probability part 1 added  
+04 Probability updated  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_04Probability.pdf
+
+### Lecture
+04 Probability added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_04Probability.pdf
 
 ### Lecture
