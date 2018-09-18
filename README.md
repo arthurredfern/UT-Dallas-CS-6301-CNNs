@@ -1,5 +1,16 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
+### Homework
+03 Homework added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Homework/UTDallas_CS6301_CNNs_03Homework.pdf
+
+### Lecture
+05 Algorithms added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_05Algorithms.pdf
+
+06 Design part 1 added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_06Design.pdf
+
 ### Lecture
 04 Probability updated  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_04Probability.pdf
