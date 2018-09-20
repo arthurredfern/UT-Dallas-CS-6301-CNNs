@@ -156,7 +156,7 @@ preds = model.predict(testImages)
 pos   = 0
 
 # create a plot of incorrect predictions
-plt.figure(figsize=(5, 3))
+plt.figure(figsize=(visualizeRows, visualizeCols))
 
 # cycle through the images
 for i in range(numTestLabels):
