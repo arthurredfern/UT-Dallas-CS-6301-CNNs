@@ -1,5 +1,13 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
+### Lecture
+06 Design part 2 added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_06Design.pdf
+
+### Code
+Homework 02 reference updated  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Code/Code03MNIST.py
+
 ### Code
 Homework 02 reference added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Code/Code03MNIST.py
