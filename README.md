@@ -1,6 +1,10 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
 ### Test
+Study guide updated  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Tests/UTDallas_CS6301_CNNs_TestStudyGuide.pdf
+
+### Test
 Study guide added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Tests/UTDallas_CS6301_CNNs_TestStudyGuide.pdf
 
