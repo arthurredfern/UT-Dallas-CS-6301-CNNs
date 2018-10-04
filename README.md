@@ -1,5 +1,13 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
+### Homework
+04 Homework added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Homework/UTDallas_CS6301_CNNs_04Homework.pdf
+
+### Lecture
+06 Design updated  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_06Design.pdf
+
 ### Test
 Study guide updated  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Tests/UTDallas_CS6301_CNNs_TestStudyGuide.pdf
