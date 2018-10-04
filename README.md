@@ -5,7 +5,7 @@
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Homework/UTDallas_CS6301_CNNs_04Homework.pdf
 
 ### Lecture
-06 Design updated  
+06 Design part 4 added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_06Design.pdf
 
 ### Test
