@@ -1,5 +1,9 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
+### Lecture
+07 Training part 3 added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_07Training.pdf
+
 ### Syllabus
 01 Current added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Syllabus/UTDallas_CS6301_CNN_SyllabusCurrent1.pdf
