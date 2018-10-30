@@ -1,6 +1,10 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
 ### Lecture
+08 Implementation part 2 added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_08Implementation.pdf
+
+### Lecture
 08 Implementation part 1 added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_08Implementation.pdf
 
