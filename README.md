@@ -1,6 +1,10 @@
 # UT Dallas CS 6301 Convolutional Neural Networks
 
 ### Lecture
+11 Language added  
+https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_11Language.pdf
+
+### Lecture
 10 Speech added  
 https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/UTDallas_CS6301_CNNs_10Speech.pdf
 
