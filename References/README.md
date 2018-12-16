@@ -57,6 +57,16 @@ http://videolectures.net/DLRLsummerschool2018_toronto/
 CMU CS 10-701 introduction to machine learning  
 http://www.cs.cmu.edu/~10701/index.html
 
+DeepMind deep learning  
+https://www.youtube.com/watch?v=iOh7QUZGyiU  
+https://www.youtube.com/watch?v=JO0LwmIlWw0  
+https://www.youtube.com/watch?v=5eAXoPSBgnE  
+https://www.youtube.com/watch?v=OfKnA91zs9I  
+https://www.youtube.com/watch?v=ALdsqfrLieg  
+https://www.youtube.com/watch?v=Y95JwaynE40  
+https://www.youtube.com/watch?v=Q57rzaHHO0k  
+https://www.youtube.com/watch?v=H4VGSYGvJiA
+
 EPFL EE 559 deep learning  
 https://fleuret.org/ee559/
 
@@ -95,6 +105,18 @@ http://dlsys.cs.washington.edu
 
 Columbia COMS W4705 natural language processing  
 http://www.cs.columbia.edu/~mcollins/cs4705-fall2018/
+
+DeepMind reinforcement learning  
+https://www.youtube.com/watch?v=ISk80iLhdfU  
+https://www.youtube.com/watch?v=eM6IBYVqXEA  
+https://www.youtube.com/watch?v=hMbxmRyDw5M  
+https://www.youtube.com/watch?v=nnxHlg-2WgA  
+https://www.youtube.com/watch?v=wAk1lxmiW4c  
+https://www.youtube.com/watch?v=bRfUxQs6xIM  
+https://www.youtube.com/watch?v=Xrxrd8nl4YI  
+https://www.youtube.com/watch?v=L6xaQ501jEs  
+https://www.youtube.com/watch?v=-mhBD8Frkc4  
+https://www.youtube.com/watch?v=ld28AU7DDB4
 
 Megvii and Peking University deep learning  
 https://zsc.github.io/megvii-pku-dl-course/
