@@ -67,7 +67,7 @@ MIT 6.036 introduction to machine learning
 http://people.csail.mit.edu/dsontag/courses/ml13/
 
 Stanford CS 20 TensorFlow for deep learning research  
-http://web.stanford.edu/class/cs20si/
+http://web.stanford.edu/class/cs20si/  
 https://github.com/chiphuyen/stanford-tensorflow-tutorials
 
 Stanford CS 217 hardware accelerators for machine learning  
@@ -115,7 +115,7 @@ Stanford CS 224s spoken language processing
 http://web.stanford.edu/class/cs224s/
 
 Stanford CS 231n convolutional neural networks for visual recognition  
-http://cs231n.stanford.edu
+http://cs231n.stanford.edu  
 http://cs231n.github.io
 
 Stanford CS 234 reinforcement learning  
@@ -125,7 +125,7 @@ Oxford deep NLP 2017 course
 https://github.com/oxford-cs-deepnlp-2017/lectures
 
 UC Berkeley CS 294 deep reinforcement learning  
-http://rll.berkeley.edu/deeprlcoursesp17/
+http://rll.berkeley.edu/deeprlcoursesp17/  
 http://rail.eecs.berkeley.edu/deeprlcourse/
 
 UC Berkeley CS 294 special topics in deep learning  
