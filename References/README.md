@@ -28,6 +28,9 @@ https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr
 Fundamentals of probability  
 https://www.statlect.com/fundamentals-of-probability/
 
+Fundamentals of statistics  
+https://www.statlect.com/fundamentals-of-statistics/
+
 Visual information theory  
 http://colah.github.io/posts/2015-09-Visual-Information/
 
