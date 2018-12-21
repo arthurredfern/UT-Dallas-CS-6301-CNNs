@@ -121,6 +121,9 @@ https://www.youtube.com/watch?v=L6xaQ501jEs
 https://www.youtube.com/watch?v=-mhBD8Frkc4  
 https://www.youtube.com/watch?v=ld28AU7DDB4
 
+Fairness and machine learning  
+https://fairmlbook.org
+
 Megvii and Peking University deep learning  
 https://zsc.github.io/megvii-pku-dl-course/
 
