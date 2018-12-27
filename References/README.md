@@ -60,6 +60,9 @@ http://videolectures.net/DLRLsummerschool2018_toronto/
 CMU CS 10-701 introduction to machine learning  
 http://www.cs.cmu.edu/~10701/index.html
 
+CMU CS 11-785 introduction to deep learning  
+http://deeplearning.cs.cmu.edu/spring2018.html
+
 DeepMind deep learning  
 https://www.youtube.com/watch?v=iOh7QUZGyiU  
 https://www.youtube.com/watch?v=JO0LwmIlWw0  
