@@ -42,6 +42,12 @@ http://www.cs.cmu.edu/~mgormley/courses/606-607-f18/schedule.html
 Deep learning  
 http://www.deeplearningbook.org
 
+TensorFlow  
+https://www.tensorflow.org
+
+TensorFlow channel  
+https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos
+
 Automatic machine learning: methods, systems, challenges  
 https://www.automl.org/book/
 
