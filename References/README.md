@@ -54,11 +54,14 @@ https://www.automl.org/book/
 Cheat sheets for AI, neural networks, machine learning, deep learning & big data  
 https://becominghuman.ai/cheat-sheets-for-ai-neural-networks-machine-learning-deep-learning-big-data-678c51b4b463
 
+Efficient processing of deep neural networks: a tutorial and survey  
+https://arxiv.org/abs/1703.09039
+
 Christopher Olah's blog  
 http://colah.github.io
 
-Efficient processing of deep neural networks: a tutorial and survey  
-https://arxiv.org/abs/1703.09039
+Jay Alammar's blog  
+https://jalammar.github.io
 
 CIFAR deep learning and reinforcement learning summer school  
 http://videolectures.net/DLRLsummerschool2018_toronto/
