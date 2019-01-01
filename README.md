@@ -1,4 +1,4 @@
-### UT Dallas CS 6301 Convolutional Neural Networks
+## UT Dallas CS 6301 Convolutional Neural Networks
 
 This is the home page for a 1 semester graduate special topics course on convolutional neural networks in the Computer Science Department at UT Dallas that covers:
 
