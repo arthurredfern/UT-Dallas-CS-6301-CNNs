@@ -1,6 +1,6 @@
 # References
 
-The following references cover a wide range of topics within a field or across multiple fields.  References relevant to specific lectures of this course are included with the slides.
+The following references cover a wide range of topics within a field or across multiple fields.  References relevant to specific lectures are included with the slides.
 
 ### Math
 
