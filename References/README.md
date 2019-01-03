@@ -43,7 +43,7 @@ Deep learning
 http://www.deeplearningbook.org
 
 TensorFlow  
-https://www.tensorflow.org
+https://www.tensorflow.org  
 https://github.com/tensorflow/tensorflow  
 https://github.com/tensorflow/models  
 https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos
