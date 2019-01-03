@@ -44,8 +44,8 @@ http://www.deeplearningbook.org
 
 TensorFlow  
 https://www.tensorflow.org
-
-TensorFlow channel  
+https://github.com/tensorflow/tensorflow  
+https://github.com/tensorflow/models  
 https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos
 
 Automatic machine learning: methods, systems, challenges  
