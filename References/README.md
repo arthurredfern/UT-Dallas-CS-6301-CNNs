@@ -51,6 +51,10 @@ https://github.com/tensorflow/tensorflow
 https://github.com/tensorflow/models  
 https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos
 
+Google colaboratory  
+https://research.google.com/seedbank/  
+https://colab.research.google.com
+
 Automatic machine learning: methods, systems, challenges  
 https://www.automl.org/book/
 
