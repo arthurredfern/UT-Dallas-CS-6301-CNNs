@@ -13,6 +13,9 @@ http://linear.axler.net/LinearAbridged.pdf
 Essence of linear algebra  
 https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab
 
+Computational linear algebra for coders  
+https://github.com/fastai/numerical-linear-algebra-v2
+
 A guide to convolution arithmetic for deep learning  
 https://arxiv.org/abs/1603.07285
 
@@ -84,6 +87,10 @@ https://www.youtube.com/watch?v=H4VGSYGvJiA
 
 EPFL EE 559 deep learning  
 https://fleuret.org/ee559/
+
+fast.ai  
+https://www.fast.ai  
+https://github.com/fastai/fastai
 
 Google machine learning crash course  
 https://developers.google.com/machine-learning/crash-course/
