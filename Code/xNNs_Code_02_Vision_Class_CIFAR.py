@@ -8,24 +8,50 @@
 #
 # INSTRUCTIONS
 #
-#    1. Go to Google Colaboratory: https://colab.research.google.com/notebooks/welcome.ipynb
+#    1. Go to Google Colaboratory:
+#       https://colab.research.google.com/notebooks/welcome.ipynb
 #    2. File - New Python 3 notebook
-#    3. Cut and paste this file into the cell (feel free to divide into multiple cells)
+#    3. Cut and paste this file into the cell (feel free to divide into multiple
+#       cells)
 #    4. Runtime - Change runtime type - Hardware accelerator - GPU
 #    5. Runtime - Run all
+#
+# DESIGN
+#
+#    1. Data
+#       a. Data source: downloaded and formatted into a Numpy array
+#       b. Dataset:     a lense into the data source
+#                       includes ordering, pre processing and batching
+#       c. Iterator:    extracts a batch of data from the dataset
+#                       connects the dataset to the model
+#    2. Model
+#       a. Maps data to predictions
+#    3. Output
+#       a. Maps predictions to accuracy or loss
+#       b. Accuracy: argmax used to monitor accuracy
+#       c. Loss:     softmax cross entropy, used by the optimizer for training
+#    4. Optimizer
+#       a. Updates the trainable parameters (of the model) to minimize the loss
+#    5. Training
+#       a. For num training epochs
+#             Cycle though an epoch of training data 1 batch at a time
+#                Compute the optimizer to update the trainable parameters to
+#                minimize the loss
+#             Cycle though an epoch of testing data 1 batch at a time
+#                Compute the accuracy to monitor progress
+#                Save the predictions for later plotting
+#    6. Display
+#       a. Extract a batch of testing data and labels
+#       b. Plot the testing data and labels along with the saved predictions
 #
 # NOTES
 #
 #    1. The word testing as used here is really validation
-#
 #    2. Future things to experiment with
-#
 #       a. Performance feels very much training data limited so look into more
 #          data augmentation methods; understand how they affect the mean and
 #          std dev of the training vs testing data and if that is an issue
-#
 #       b. Others find that hue seems to be least helpful / unhelpful
-#
 #       c. Consider using the full image (vs center crop only) during testing
 #
 ################################################################################
