@@ -8,24 +8,20 @@
 #
 # INSTRUCTIONS
 #
-#    1. Go to Google Colaboratory: https://colab.research.google.com/notebooks/welcome.ipynb
+#    1. Go to Google Colaboratory:
+#       https://colab.research.google.com/notebooks/welcome.ipynb
 #    2. File - New Python 3 notebook
-#    3. Cut and paste this file into the cell (feel free to divide into multiple cells)
+#    3. Cut and paste this file into the cell (ok to divide into multiple cells)
 #    4. Runtime - Run all
 #
-# STATISTICS
+# RESULTS
 #
 #    Number of training images:   100000
 #    Number of validation images: 10000
-#    Mean*:                       [0.47593436 0.4481389  0.39262872]
+#    Mean*:                       [0.47593436 0.44813890 0.39262872]
 #    Std dev:                     [0.27633505 0.26869268 0.28134818]
 #
 #    *After dividing image by 255.0
-#
-# TO DO
-#
-#    1. The visualization has a bug with respect to the text labels that
-#       eventually needs to be fixed
 #
 ################################################################################
 
@@ -235,7 +231,7 @@ classes_id_label = {}
 with open(os.path.join(DATA_DOWNLOAD_DIR, 'tiny-imagenet-200/wnids.txt')) as f:
     content = f.readlines()
 content = [x.strip() for x in content]
-for counter, value in enumerate(classes):
+for counter, value in enumerate(content):
     classes_id_label[value] = counter
 
 # iterate through all training images and save their paths and labels
