@@ -4,11 +4,11 @@ This is the home page for a 1 semester graduate special topics course on convolu
 
 - Math:  linear algebra, calculus, probability and algorithms
 - Networks:  design, training and implementation
-- Applications:  vision, speech, language, games (to be added) and art (to be added)
+- Applications:  vision, speech, language, games and art (to be added)
 
 While the title of the course is convolutional neural networks, the course covers many parts of deep learning including **convolutional neural networks**, **recurrent neural networks**, **attention** and variants.
 
-The slides were created for the 1st time that the class was taught in the Fall 2018 semester.  These are gradually being revised for the 2nd time that the class is being taught in the Spring 2019 semester.  Expect continual updates throughout the Spring semester for both slides in the Lectures directory and complementary code in the Code directory.
+The slides were created for the 1st time that the class was taught in the Fall 2018 semester.  These are gradually being revised for the 2nd time that the class is being taught in the Spring 2019 semester.  Expect continual updates throughout the Spring semester.
 
 ### Introduction  
 [Introduction](https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/xNNs_01_Introduction.pdf)  
