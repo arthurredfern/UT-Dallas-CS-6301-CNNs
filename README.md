@@ -29,7 +29,7 @@ The slides were created for the 1st time that the class was taught in the Fall 2
 [Language](https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/xNNs_11_Language.pdf)  
 [Speech](https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/xNNs_10_Speech.pdf)  
 [Games](https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/xNNs_12_Games.pdf)  
-[Art](https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/xNNs_13_Art.pdf)  
+[Art](https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/xNNs_13_Art.pdf) (placeholder)  
 
 ### Summary  
 [Summary](https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/xNNs_14_Summary.pdf)  
