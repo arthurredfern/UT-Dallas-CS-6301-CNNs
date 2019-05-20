@@ -10,6 +10,10 @@ While the title of the course is convolutional neural networks, the course cover
 
 The slides were created for the 1st time that the class was taught in the Fall 2018 semester and revised for the 2nd time that the class was taught during the Spring 2019 semester.  Expect continual updates for future semesters.
 
+```diff
+- Note: GitHub stops displaying pages in a pdf file after 50, you need to download the pdf to see pages 50+
+```
+
 ### Introduction  
 [Introduction](https://github.com/arthurredfern/UT-Dallas-CS-6301-CNNs/blob/master/Lectures/xNNs_01_Introduction.pdf)  
 
