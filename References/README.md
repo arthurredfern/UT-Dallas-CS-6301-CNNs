@@ -181,3 +181,6 @@ http://rail.eecs.berkeley.edu/deeprlcourse/
 
 UC Berkeley CS 294 special topics in deep learning  
 https://berkeley-deep-learning.github.io/cs294-131-s18/
+
+UC Berkeley Full Stack Deep Learning Bootcamp  
+https://fullstackdeeplearning.com/march2019
