@@ -55,6 +55,9 @@ Google colaboratory
 https://research.google.com/seedbank/  
 https://colab.research.google.com
 
+Machine learning and deep learning in python using Scikit-Learn and TensorFlow  
+https://github.com/ageron/handson-ml
+
 Automatic machine learning: methods, systems, challenges  
 https://www.automl.org/book/
 
