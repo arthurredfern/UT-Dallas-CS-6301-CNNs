@@ -22,12 +22,6 @@ https://arxiv.org/abs/1603.07285
 The matrix cookbook  
 https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf
 
-Calculus  
-http://mathonline.wikidot.com/calculus
-
-Essence of calculus  
-https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr
-
 Fundamentals of probability  
 https://www.statlect.com/fundamentals-of-probability/
 
@@ -36,6 +30,12 @@ https://www.statlect.com/fundamentals-of-statistics/
 
 Visual information theory  
 http://colah.github.io/posts/2015-09-Visual-Information/
+
+Calculus  
+http://mathonline.wikidot.com/calculus
+
+Essence of calculus  
+https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr
 
 CMU CS 10-606/607 mathematical / computational foundations for machine learning  
 http://www.cs.cmu.edu/~mgormley/courses/606-607-f18/schedule.html
