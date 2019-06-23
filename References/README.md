@@ -167,6 +167,9 @@ https://selfdrivingcars.mit.edu
 MIT 6.S191 introduction to deep learning  
 http://introtodeeplearning.com
 
+Oxford deep NLP 2017 course  
+https://github.com/oxford-cs-deepnlp-2017/lectures
+
 Speech and language processing  
 https://web.stanford.edu/~jurafsky/slp3/
 
@@ -182,9 +185,6 @@ http://cs231n.github.io
 
 Stanford CS 234 reinforcement learning  
 http://web.stanford.edu/class/cs234/index.html
-
-Oxford deep NLP 2017 course  
-https://github.com/oxford-cs-deepnlp-2017/lectures
 
 UC Berkeley CS 294 deep reinforcement learning  
 http://rll.berkeley.edu/deeprlcoursesp17/  
