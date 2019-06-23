@@ -45,11 +45,18 @@ http://www.cs.cmu.edu/~mgormley/courses/606-607-f18/schedule.html
 Deep learning  
 http://www.deeplearningbook.org
 
-TensorFlow  
+TensorFlow YouTube Channel  
+https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos  
+
+TensorFlow 1.x  
 https://www.tensorflow.org  
 https://github.com/tensorflow/tensorflow  
 https://github.com/tensorflow/models  
-https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos
+
+TensorFlow 2.x  
+https://medium.com/tensorflow/announcing-tensorflow-2-0-beta-abb24bbfbe3d  
+https://www.tensorflow.org/beta  
+https://www.tensorflow.org/beta/guide/keras/overview  
 
 Google colaboratory  
 https://research.google.com/seedbank/  
@@ -103,7 +110,8 @@ Google machine learning crash course
 https://developers.google.com/machine-learning/crash-course/
 
 MIT 6.036 introduction to machine learning  
-http://people.csail.mit.edu/dsontag/courses/ml13/
+https://phillipi.github.io/6.882/notes/6.036_notes.pdf  
+http://people.csail.mit.edu/dsontag/courses/ml13/  
 
 Stanford CS 20 TensorFlow for deep learning research  
 http://web.stanford.edu/class/cs20si/  
