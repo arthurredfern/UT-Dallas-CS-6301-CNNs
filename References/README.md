@@ -140,6 +140,9 @@ http://dlsys.cs.washington.edu
 
 ### Applications
 
+An introduction to deep reinforcement learning  
+https://arxiv.org/abs/1811.12560  
+
 Columbia COMS W4705 natural language processing  
 http://www.cs.columbia.edu/~mcollins/cs4705-fall2018/
 
