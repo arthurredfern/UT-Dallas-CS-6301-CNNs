@@ -30,7 +30,7 @@
 ################################################################################
 
 # tensorflow 2.0 beta and tensorflow datasets
-!pip install tensorflow==2.0.0-beta1
+!pip install tensorflow-gpu==2.0.0-beta1
 !pip install tensorflow-datasets
 
 # tenorflow
