@@ -41,6 +41,8 @@
 # tensorflow 2.0 beta and tensorflow datasets
 !pip install tensorflow-gpu==2.0.0-beta1
 !pip install tensorflow-datasets
+%load_ext tensorboard
+%tensorboard --logdir logs
 
 # tenorflow
 import tensorflow as     tf
@@ -278,9 +280,10 @@ def plot_training_curves(history):
     plt.xlabel('epoch')
     plt.show()
 
-# callbacks (learning rate schedule, model checkpointing during training)
+# callbacks (learning rate schedule, model checkpointing during training, tensorboard)
 callbacks = [keras.callbacks.LearningRateScheduler(lr_schedule),
-             keras.callbacks.ModelCheckpoint(filepath=SAVE_MODEL_PATH+'model_{epoch}.h5', save_best_only=True, monitor='val_loss', verbose=1)]
+             keras.callbacks.ModelCheckpoint(filepath=SAVE_MODEL_PATH+'model_{epoch}.h5', save_best_only=True, monitor='val_loss', verbose=1),
+             keras.callbacks.TensorBoard()]
 
 # training
 initial_epoch_num = 0
