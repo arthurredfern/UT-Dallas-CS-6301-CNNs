@@ -16,7 +16,7 @@
 #
 # NOTES
 #
-#    1. This configuration achieves 89.9% accuracy in 30 epochs with each epoch
+#    1. This configuration achieves 91.6% accuracy in 60 epochs with each epoch
 #       taking ~ 135s on Google Colab.  Accuracy can be improved via
 #       - Improved training data augmentation
 #       - Improved network design
@@ -87,7 +87,7 @@ TRAINING_LR_MAX          = 0.001
 TRAINING_LR_INIT_SCALE   = 0.01
 TRAINING_LR_INIT_EPOCHS  = 5
 TRAINING_LR_FINAL_SCALE  = 0.01
-TRAINING_LR_FINAL_EPOCHS = 25
+TRAINING_LR_FINAL_EPOCHS = 55
 
 # training (derived)
 TRAINING_NUM_EPOCHS = TRAINING_LR_INIT_EPOCHS + TRAINING_LR_FINAL_EPOCHS
