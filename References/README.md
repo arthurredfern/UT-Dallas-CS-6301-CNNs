@@ -4,6 +4,9 @@ The following references cover a wide range of topics within a field or across m
 
 ### Math
 
+Mathematics for machine learning  
+https://gwthomas.github.io/docs/math4ml.pdf
+
 Linear algebra  
 https://www.math.ucdavis.edu/~linear/linear-guest.pdf
 
