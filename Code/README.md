@@ -7,8 +7,8 @@ Specific applications include:
 - Vision (focus: CNNs)
   - Image classification (ResNetV2)
   - Pixel classification
-  - Object detection (Faster R-CNN with ResNetV2-50 and FPN)
-  - Object segmentation (Mask R-CNN with ResNetV2-50 and FPN)
+  - Object detection (Faster R-CNN with ResNet-50 V2 and FPN)
+  - Object segmentation (Mask R-CNN with ResNet-50 V2 and FPN)
   - Depth estimation
   - Motion estimation
 
