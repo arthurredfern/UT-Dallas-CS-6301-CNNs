@@ -30,22 +30,28 @@
 #
 ################################################################################
 
-# tensorflow 2.0 beta and tensorflow datasets
-!pip install tensorflow-gpu==2.0.0-beta1
-!pip install tensorflow-datasets
+# select tensorflow 2 in colab
+%tensorflow_version 2.x
 
-# tenorflow
+# install tensorflow 2 and tensorflow datasets on a personal machine
+# !pip install tensorflow-gpu
+# !pip install tensorflow-datasets
+
+# import tenorflow
 import tensorflow as     tf
 from   tensorflow import keras
 
-# tensorflow datasets
+# import tensorflow datasets
 import tensorflow_datasets as tfds
 
-# additional libraries
+# import additional libraries
 import math
 import numpy             as np
 import matplotlib.pyplot as plt
 # %matplotlib inline
+
+# version check
+# print(tf.__version__)
 
 ################################################################################
 #

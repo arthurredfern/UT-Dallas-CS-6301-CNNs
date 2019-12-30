@@ -19,7 +19,7 @@
 # NOTES
 #
 #    1. This configuration achieves 93.0% accuracy in 60 epochs with each epoch
-#       taking ~ 140s on Google Colab.  Accuracy can be improved via
+#       taking ~ 50s on Google Colab.  Accuracy can be improved via
 #       - Improved training data augmentation
 #       - Improved network design
 #       - Improved network training
@@ -40,9 +40,12 @@
 #
 ################################################################################
 
-# tensorflow 2.0 beta and tensorflow datasets
-!pip install tensorflow-gpu==2.0.0-beta1
-!pip install tensorflow-datasets
+# select tensorflow 2 in colab
+%tensorflow_version 2.x
+
+# install tensorflow 2 and tensorflow datasets on a personal machine
+# !pip install tensorflow-gpu
+# !pip install tensorflow-datasets
 
 # tenorflow
 import tensorflow as     tf
@@ -55,7 +58,10 @@ import tensorflow_datasets as tfds
 import math
 import numpy             as np
 import matplotlib.pyplot as plt
-%matplotlib inline
+# %matplotlib inline
+
+# version check
+# print(tf.__version__)
 
 ################################################################################
 #
