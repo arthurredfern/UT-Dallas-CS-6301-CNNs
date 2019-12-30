@@ -51,15 +51,9 @@ http://www.deeplearningbook.org
 TensorFlow YouTube Channel  
 https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos  
 
-TensorFlow 1.x  
+TensorFlow
 https://www.tensorflow.org  
 https://github.com/tensorflow/tensorflow  
-https://github.com/tensorflow/models  
-
-TensorFlow 2.x  
-https://medium.com/tensorflow/announcing-tensorflow-2-0-beta-abb24bbfbe3d  
-https://www.tensorflow.org/beta  
-https://www.tensorflow.org/beta/guide/keras/overview  
 
 Google colaboratory  
 https://research.google.com/seedbank/  
