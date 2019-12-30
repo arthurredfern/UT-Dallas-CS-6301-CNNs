@@ -51,7 +51,7 @@ http://www.deeplearningbook.org
 TensorFlow YouTube Channel  
 https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos  
 
-TensorFlow
+TensorFlow  
 https://www.tensorflow.org  
 https://github.com/tensorflow/tensorflow  
 
