@@ -45,6 +45,12 @@ http://www.cs.cmu.edu/~mgormley/courses/606-607-f18/schedule.html
 
 ### Networks
 
+Google machine learning crash course, practica, guides and glossary  
+https://developers.google.com/machine-learning/crash-course/
+https://developers.google.com/machine-learning/practica/
+https://developers.google.com/machine-learning/guides/
+https://developers.google.com/machine-learning/glossary/
+
 Deep learning  
 http://www.deeplearningbook.org
 
