@@ -18,4 +18,6 @@ Recordings include:
 * 093 Language 3/3
 * 101 Speech 1/2
 * 102 Speech 2/2
+* 111 Games 1/3
+* 112 Games 2/3
 * ...
