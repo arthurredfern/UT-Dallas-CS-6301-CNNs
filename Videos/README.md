@@ -3,9 +3,10 @@
 Due to UT Dallas classes moving to an online format for the 2nd half of the Spring 2020 semester:
 
 * I started recording the lectures
-* I biased the in person mix of slides + whiteboard to more of a slides only format for the initial online lectures
+* I switched the in person mix of slides + whiteboard to a slides only format for this set of online lectures
 * I hope to re introduce the whiteboard in future online lectures (TBD)
-* The quality of presentation improves as the lecture number increases, however, this is a still very much a work in progress and a step down in smoothness relative to live class and feedback
+* The quality of presentation improves as the lecture number increases
+* However, this is a still very much a work in progress and a step down in smoothness relative to live class, mix of slides and whiteboard, and continual feedback
 
 Recordings include:
 
@@ -20,4 +21,4 @@ Recordings include:
 * 102 Speech 2/2
 * 111 Games 1/3
 * 112 Games 2/3
-* ...
+* 113 Games 3/3
