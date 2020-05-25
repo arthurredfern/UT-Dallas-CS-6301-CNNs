@@ -2,6 +2,15 @@
 
 The following references cover a wide range of topics within a field or across multiple fields.  References relevant to specific lectures are included with the slides.
 
+### General
+
+Deep learning  
+http://www.deeplearningbook.org
+
+Dive into deep learning  
+https://d2l.ai  
+https://github.com/d2l-ai/d2l-en
+
 ### Math
 
 Mathematics for machine learning  
@@ -50,9 +59,6 @@ https://developers.google.com/machine-learning/crash-course/
 https://developers.google.com/machine-learning/practica/  
 https://developers.google.com/machine-learning/guides/  
 https://developers.google.com/machine-learning/glossary/  
-
-Deep learning  
-http://www.deeplearningbook.org
 
 TensorFlow YouTube Channel  
 https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos  
