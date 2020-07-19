@@ -4,7 +4,7 @@
 #
 # DESCRIPTION
 #
-#    PyTorch image classification using CIFAR
+#    CIFAR image classification using PyTorch
 #
 # INSTRUCTIONS
 #
@@ -49,11 +49,6 @@ import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
 
-# visualization
-# !pip install --quiet torchviz
-# from   torchviz     import make_dot
-# from   torchsummary import summary
-
 # additional libraries
 import math
 import numpy             as np
@@ -70,6 +65,7 @@ import matplotlib.pyplot as plt
 ################################################################################
 
 # data (general)
+DATA_DIR          = './data'
 DATA_NUM_CHANNELS = 3
 DATA_NUM_CLASSES  = 10
 DATA_CROP_ROWS    = 28
@@ -80,6 +76,10 @@ DATA_MEAN    = (0.5, 0.5, 0.5)
 DATA_STD_DEV = (0.5, 0.5, 0.5)
 # DATA_MEAN    = (0.49137914, 0.48213690, 0.44650456)
 # DATA_STD_DEV = (0.24703294, 0.24348527, 0.26158544)
+
+# data (loader)
+DATA_BATCH_SIZE  = 32
+DATA_NUM_WORKERS = 4
 
 # data (for display)
 DATA_CLASS_NAMES = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
@@ -92,12 +92,8 @@ MODEL_LEVEL_0_CHANNELS = 32
 MODEL_LEVEL_1_CHANNELS = 64
 MODEL_LEVEL_2_CHANNELS = 128
 
-# training (general)
-TRAINING_BATCH_SIZE  = 32
-TRAINING_NUM_WORKERS = 4
-TRAINING_LR_MAX      = 0.001
-
 # training (linear warm up with cosine decay learning rate)
+TRAINING_LR_MAX          = 0.001
 TRAINING_LR_INIT_SCALE   = 0.01
 TRAINING_LR_INIT_EPOCHS  = 5
 TRAINING_LR_FINAL_SCALE  = 0.01
@@ -107,15 +103,10 @@ TRAINING_NUM_EPOCHS      = TRAINING_LR_INIT_EPOCHS + TRAINING_LR_FINAL_EPOCHS
 TRAINING_LR_INIT         = TRAINING_LR_MAX*TRAINING_LR_INIT_SCALE
 TRAINING_LR_FINAL        = TRAINING_LR_MAX*TRAINING_LR_FINAL_SCALE
 
-# training (staircase learning rate)
-# TRAINING_LR_SCALE   = 0.1
-# TRAINING_LR_EPOCHS  = 10
-# TRAINING_NUM_EPOCHS = 30
-
-# save
-# SAVE_MODEL_PATH      = './save/model/'
-# SAVE_CHECKPOINT_FILE = SAVE_MODEL_PATH + 'training_checkpoint.pt'
-# !mkdir -p "$SAVE_MODEL_PATH"
+# file
+FILE_NAME = 'CifarCnn.pt'
+FILE_SAVE = 0
+FILE_LOAD = 0
 
 ################################################################################
 #
@@ -128,12 +119,12 @@ transform_train = transforms.Compose([transforms.RandomCrop((DATA_CROP_ROWS, DAT
 transform_test  = transforms.Compose([transforms.CenterCrop((DATA_CROP_ROWS, DATA_CROP_COLS)), transforms.ToTensor(), transforms.Normalize(DATA_MEAN, DATA_STD_DEV)])
 
 # training and testing datasets with applied transform
-dataset_train = torchvision.datasets.CIFAR10(root='./data', train=True,  download=True, transform=transform_train)
-dataset_test  = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
+dataset_train = torchvision.datasets.CIFAR10(root=DATA_DIR, train=True,  download=True, transform=transform_train)
+dataset_test  = torchvision.datasets.CIFAR10(root=DATA_DIR, train=False, download=True, transform=transform_test)
 
 # training and testing datasets loader
-dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=TRAINING_BATCH_SIZE, shuffle=True,  num_workers=TRAINING_NUM_WORKERS, drop_last=True)
-dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=TRAINING_BATCH_SIZE, shuffle=False, num_workers=TRAINING_NUM_WORKERS, drop_last=True)
+dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=DATA_BATCH_SIZE, shuffle=True,  num_workers=DATA_NUM_WORKERS, drop_last=True)
+dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=DATA_BATCH_SIZE, shuffle=False, num_workers=DATA_NUM_WORKERS, drop_last=True)
 
 # debug - datasets
 # print(dataset_train) # displays dataset info
@@ -150,8 +141,8 @@ dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=TRAININ
 # debug - stats computation
 # torch.set_printoptions(precision=8)
 # transform_stats     = transforms.Compose([transforms.ToTensor(), transforms.Normalize(DATA_MEAN, DATA_STD_DEV)])
-# dataset_stats       = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_stats)
-# dataloader_stats    = torch.utils.data.DataLoader(dataset_stats, batch_size=TRAINING_BATCH_SIZE, shuffle=False, num_workers=TRAINING_NUM_WORKERS, drop_last=True)
+# dataset_stats       = torchvision.datasets.CIFAR10(root=DATA_DIR, train=True, download=True, transform=transform_stats)
+# dataloader_stats    = torch.utils.data.DataLoader(dataset_stats, batch_size=DATA_BATCH_SIZE, shuffle=False, num_workers=DATA_NUM_WORKERS, drop_last=True)
 # num_batches         = 0
 # data_mean           = torch.tensor([0.0, 0.0, 0.0])
 # for data in dataloader_stats:
@@ -252,9 +243,10 @@ model = Model(DATA_NUM_CHANNELS, DATA_NUM_CLASSES, MODEL_LEVEL_0_BLOCKS, MODEL_L
 
 # visualization
 # print(model)
-# x = torch.zeros(1, DATA_NUM_CHANNELS, DATA_CROP_ROWS, DATA_CROP_COLS, dtype=torch.float)
-# y = model(x)
-# make_dot(y)
+
+# ONNX export
+# model_x = torch.randn(1, DATA_NUM_CHANNELS, DATA_CROP_ROWS, DATA_CROP_COLS, dtype=torch.float)
+# torch.onnx.export(model, model_x, "CifarCnn.onnx", verbose=True)
 
 ################################################################################
 #
@@ -268,18 +260,11 @@ start_epoch = 0
 # learning rate schedule
 def lr_schedule(epoch):
 
-    # staircase
-    # lr = TRAINING_LR_MAX*math.pow(TRAINING_LR_SCALE, math.floor(epoch/TRAINING_LR_EPOCHS))
-
     # linear warmup followed by cosine decay
     if epoch < TRAINING_LR_INIT_EPOCHS:
         lr = (TRAINING_LR_MAX - TRAINING_LR_INIT)*(float(epoch)/TRAINING_LR_INIT_EPOCHS) + TRAINING_LR_INIT
     else:
         lr = (TRAINING_LR_MAX - TRAINING_LR_FINAL)*max(0.0, math.cos(((float(epoch) - TRAINING_LR_INIT_EPOCHS)/(TRAINING_LR_FINAL_EPOCHS - 1.0))*(math.pi/2.0))) + TRAINING_LR_FINAL
-
-    # debug - learning rate display
-    # print(epoch)
-    # print(lr)
 
     return lr
 
@@ -289,19 +274,19 @@ criterion = nn.CrossEntropyLoss()
 # optimizer
 optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
-# checkpoint loading
-# checkpoint = torch.load(SAVE_CHECKPOINT_FILE)
-# model.load_state_dict(checkpoint['model_state_dict'])
-# optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-# start_epoch = checkpoint['epoch'] + 1
-
 # specify the device as the GPU if present with fallback to the CPU
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # print(device)
 
 # transfer the network to the device
 model.to(device)
-# summary(model, (DATA_NUM_CHANNELS, DATA_CROP_ROWS, DATA_CROP_COLS))
+
+# model loading
+if FILE_LOAD == 1:
+    checkpoint = torch.load(FILE_NAME)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    start_epoch = checkpoint['epoch'] + 1
 
 # cycle through the epochs
 for epoch in range(start_epoch, TRAINING_NUM_EPOCHS):
@@ -358,19 +343,20 @@ for epoch in range(start_epoch, TRAINING_NUM_EPOCHS):
             test_total   = test_total + labels.size(0)
             test_correct = test_correct + (predicted == labels).sum().item()
 
-    # checkpoint saving
-    # torch.save({
-    #     'epoch':                epoch,
-    #     'model_state_dict':     model.state_dict(),
-    #     'optimizer_state_dict': optimizer.state_dict()
-    #     }, SAVE_CHECKPOINT_FILE)
-
     # epoch statistics
-    print('Epoch {0:2d} avg loss = {1:8.6f} accuracy = {2:5.2f}'.format(epoch, (training_loss/num_batches)/TRAINING_BATCH_SIZE, (100.0*test_correct/test_total)))
+    print('Epoch {0:2d} lr = {1:8.6f} avg loss = {2:8.6f} accuracy = {3:5.2f}'.format(epoch, lr_schedule(epoch), (training_loss/num_batches)/DATA_BATCH_SIZE, (100.0*test_correct/test_total)))
 
-    # checkpoint test
-    # if epoch == 2:
-    #     break
+# model saving
+# to use this for checkpointing put this code block inside the training loop at the end (e.g., just indent it 4 spaces)
+# and set 'epoch' to the current epoch instead of TRAINING_NUM_EPOCHS - 1; then if there's a crash it will be possible
+# to load this checkpoint and restart training from the last complete epoch instead of having to start training at the
+# beginning
+if FILE_SAVE == 1:
+    torch.save({
+        'epoch': TRAINING_NUM_EPOCHS - 1,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict()
+    }, FILE_NAME)
 
 ################################################################################
 #
@@ -437,7 +423,7 @@ inputs, labels = data_iterator.next()
 images    = torchvision.utils.make_grid(inputs)/2 + 0.5
 np_images = images.numpy()
 plt.imshow(np.transpose(np_images, (1, 2, 0)))
-print('Ground truth = ', ' '.join('%5s' % DATA_CLASS_NAMES[labels[j]] for j in range(TRAINING_BATCH_SIZE)))
+print('Ground truth = ', ' '.join('%5s' % DATA_CLASS_NAMES[labels[j]] for j in range(DATA_BATCH_SIZE)))
 
 # move it to the appropriate device
 inputs, labels = inputs.to(device), labels.to(device)
@@ -447,5 +433,5 @@ outputs      = model(inputs)
 _, predicted = torch.max(outputs, 1)
 
 # predicted labels
-print('Predicted    = ', ' '.join('%5s' % DATA_CLASS_NAMES[predicted[j]] for j in range(TRAINING_BATCH_SIZE)))
+print('Predicted    = ', ' '.join('%5s' % DATA_CLASS_NAMES[predicted[j]] for j in range(DATA_BATCH_SIZE)))
 print('')

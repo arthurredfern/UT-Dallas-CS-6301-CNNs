@@ -16,7 +16,7 @@
 #
 # NOTES
 #
-#    1. This configuration achieves 95.5% accuracy in 9 epochs.  Accuracy can be
+#    1. This configuration achieves 95.4% accuracy in 9 epochs.  Accuracy can be
 #       improved via
 #       - Improved training data augmentation
 #       - Improved network design
@@ -57,6 +57,7 @@ import matplotlib.pyplot as plt
 ################################################################################
 
 # data (general)
+DATA_DIR          = './data'
 DATA_NUM_CHANNELS = 1
 DATA_CROP_ROWS    = 28
 DATA_CROP_COLS    = 28
@@ -64,6 +65,10 @@ DATA_NUM_CLASSES  = 10
 
 # data (for [0, 1] normalization of MNIST)
 DATA_NORM = 255.0
+
+# data (loader)
+DATA_BATCH_SIZE  = 32
+DATA_NUM_WORKERS = 4
 
 # data (for display)
 DATA_CLASS_NAMES = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
@@ -74,12 +79,8 @@ MODEL_LEVEL_1_BLOCKS   = 1
 MODEL_LEVEL_0_CHANNELS = 1000
 MODEL_LEVEL_1_CHANNELS = 100
 
-# training (general)
-TRAINING_BATCH_SIZE  = 32
-TRAINING_NUM_WORKERS = 4
-TRAINING_LR_MAX      = 0.001
-
 # training (linear warm up with cosine decay learning rate)
+TRAINING_LR_MAX          = 0.001
 TRAINING_LR_INIT_SCALE   = 0.01
 TRAINING_LR_INIT_EPOCHS  = 3
 TRAINING_LR_FINAL_SCALE  = 0.01
@@ -87,11 +88,6 @@ TRAINING_LR_FINAL_EPOCHS = 6
 TRAINING_NUM_EPOCHS      = TRAINING_LR_INIT_EPOCHS + TRAINING_LR_FINAL_EPOCHS
 TRAINING_LR_INIT         = TRAINING_LR_MAX*TRAINING_LR_INIT_SCALE
 TRAINING_LR_FINAL        = TRAINING_LR_MAX*TRAINING_LR_FINAL_SCALE
-
-# training (staircase learning rate)
-# TRAINING_LR_SCALE   = 0.1
-# TRAINING_LR_EPOCHS  = 3
-# TRAINING_NUM_EPOCHS = 9
 
 ################################################################################
 #
@@ -104,12 +100,12 @@ transform_train = transforms.Compose([transforms.ToTensor(), transforms.Normaliz
 transform_test  = transforms.Compose([transforms.ToTensor(), transforms.Normalize(0, DATA_NORM)])
 
 # training and testing datasets with applied transform
-dataset_train = torchvision.datasets.MNIST(root='./data', train=True,  download=True, transform=transform_train)
-dataset_test  = torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform_test)
+dataset_train = torchvision.datasets.MNIST(root=DATA_DIR, train=True,  download=True, transform=transform_train)
+dataset_test  = torchvision.datasets.MNIST(root=DATA_DIR, train=False, download=True, transform=transform_test)
 
 # training and testing datasets loader
-dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=TRAINING_BATCH_SIZE, shuffle=True,  num_workers=TRAINING_NUM_WORKERS, drop_last=True)
-dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=TRAINING_BATCH_SIZE, shuffle=False, num_workers=TRAINING_NUM_WORKERS, drop_last=True)
+dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=DATA_BATCH_SIZE, shuffle=True,  num_workers=DATA_NUM_WORKERS, drop_last=True)
+dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=DATA_BATCH_SIZE, shuffle=False, num_workers=DATA_NUM_WORKERS, drop_last=True)
 
 # debug - datasets
 # print(dataset_train) # displays dataset info
@@ -186,6 +182,10 @@ model = Model(DATA_NUM_CHANNELS, DATA_CROP_ROWS, DATA_CROP_COLS, DATA_NUM_CLASSE
 # visualization
 # print(model)
 
+# ONNX export
+# model_x = torch.randn(1, DATA_NUM_CHANNELS, DATA_CROP_ROWS, DATA_CROP_COLS, dtype=torch.float)
+# torch.onnx.export(model, model_x, "MnistNn.onnx", verbose=True)
+
 ################################################################################
 #
 # TRAIN
@@ -198,18 +198,11 @@ start_epoch = 0
 # learning rate schedule
 def lr_schedule(epoch):
 
-    # staircase
-    # lr = TRAINING_LR_MAX*math.pow(TRAINING_LR_SCALE, math.floor(epoch/TRAINING_LR_EPOCHS))
-
     # linear warmup followed by cosine decay
     if epoch < TRAINING_LR_INIT_EPOCHS:
         lr = (TRAINING_LR_MAX - TRAINING_LR_INIT)*(float(epoch)/TRAINING_LR_INIT_EPOCHS) + TRAINING_LR_INIT
     else:
         lr = (TRAINING_LR_MAX - TRAINING_LR_FINAL)*max(0.0, math.cos(((float(epoch) - TRAINING_LR_INIT_EPOCHS)/(TRAINING_LR_FINAL_EPOCHS - 1.0))*(math.pi/2.0))) + TRAINING_LR_FINAL
-
-    # debug - learning rate display
-    # print(epoch)
-    # print(lr)
 
     return lr
 
@@ -282,7 +275,7 @@ for epoch in range(start_epoch, TRAINING_NUM_EPOCHS):
             test_correct = test_correct + (predicted == labels).sum().item()
 
     # epoch statistics
-    print('Epoch {0:2d} avg loss = {1:8.6f} accuracy = {2:5.2f}'.format(epoch, (training_loss/num_batches)/TRAINING_BATCH_SIZE, (100.0*test_correct/test_total)))
+    print('Epoch {0:2d} lr = {1:8.6f} avg loss = {2:8.6f} accuracy = {3:5.2f}'.format(epoch, lr_schedule(epoch), (training_loss/num_batches)/DATA_BATCH_SIZE, (100.0*test_correct/test_total)))
 
 ################################################################################
 #
@@ -349,7 +342,7 @@ inputs, labels = data_iterator.next()
 images    = torchvision.utils.make_grid(inputs)*DATA_NORM
 np_images = images.numpy()
 plt.imshow(np.transpose(np_images, (1, 2, 0)))
-print('Ground truth = ', ' '.join('%5s' % DATA_CLASS_NAMES[labels[j]] for j in range(TRAINING_BATCH_SIZE)))
+print('Ground truth = ', ' '.join('%5s' % DATA_CLASS_NAMES[labels[j]] for j in range(DATA_BATCH_SIZE)))
 
 # move it to the appropriate device
 inputs, labels = inputs.to(device), labels.to(device)
@@ -359,5 +352,5 @@ outputs      = model(inputs)
 _, predicted = torch.max(outputs, 1)
 
 # predicted labels
-print('Predicted    = ', ' '.join('%5s' % DATA_CLASS_NAMES[predicted[j]] for j in range(TRAINING_BATCH_SIZE)))
+print('Predicted    = ', ' '.join('%5s' % DATA_CLASS_NAMES[predicted[j]] for j in range(DATA_BATCH_SIZE)))
 print('')

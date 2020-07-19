@@ -4,7 +4,7 @@
 #
 # DESCRIPTION
 #
-#    PyTorch image classification using CIFAR
+#    CIFAR image classification using PyTorch
 #
 # INSTRUCTIONS
 #
@@ -16,7 +16,7 @@
 #
 # NOTES
 #
-#    1. This configuration achieves 91.4% accuracy in 60 epochs with each epoch
+#    1. This configuration achieves ??.?% accuracy in 60 epochs with each epoch
 #       taking ~ 70s on Google Colab.  Accuracy can be improved via
 #       - Improved training data augmentation
 #       - Improved network design
@@ -47,11 +47,6 @@ import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
 
-# visualization
-# !pip install --quiet torchviz
-# from   torchviz     import make_dot
-# from   torchsummary import summary
-
 # additional libraries
 import math
 import numpy             as np
@@ -68,6 +63,7 @@ import matplotlib.pyplot as plt
 ################################################################################
 
 # data (general)
+DATA_DIR          = './data'
 DATA_NUM_CHANNELS = 3
 DATA_NUM_CLASSES  = 10
 DATA_CROP_ROWS    = 28
@@ -78,6 +74,10 @@ DATA_MEAN    = (0.5, 0.5, 0.5)
 DATA_STD_DEV = (0.5, 0.5, 0.5)
 # DATA_MEAN    = (0.49137914, 0.48213690, 0.44650456)
 # DATA_STD_DEV = (0.24703294, 0.24348527, 0.26158544)
+
+# data (loader)
+DATA_BATCH_SIZE  = 32
+DATA_NUM_WORKERS = 4
 
 # data (for display)
 DATA_CLASS_NAMES = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
@@ -94,12 +94,8 @@ MODEL_LEVEL_1_RESIDUAL_CHANNELS = 64
 MODEL_LEVEL_2_IDENTITY_CHANNELS = 512
 MODEL_LEVEL_2_RESIDUAL_CHANNELS = 128
 
-# training (general)
-TRAINING_BATCH_SIZE  = 32
-TRAINING_NUM_WORKERS = 4
-TRAINING_LR_MAX      = 0.001
-
 # training (linear warm up with cosine decay learning rate)
+TRAINING_LR_MAX          = 0.001
 TRAINING_LR_INIT_SCALE   = 0.01
 TRAINING_LR_INIT_EPOCHS  = 5
 TRAINING_LR_FINAL_SCALE  = 0.01
@@ -109,15 +105,10 @@ TRAINING_NUM_EPOCHS      = TRAINING_LR_INIT_EPOCHS + TRAINING_LR_FINAL_EPOCHS
 TRAINING_LR_INIT         = TRAINING_LR_MAX*TRAINING_LR_INIT_SCALE
 TRAINING_LR_FINAL        = TRAINING_LR_MAX*TRAINING_LR_FINAL_SCALE
 
-# training (staircase learning rate)
-# TRAINING_LR_SCALE   = 0.1
-# TRAINING_LR_EPOCHS  = 10
-# TRAINING_NUM_EPOCHS = 30
-
-# save
-# SAVE_MODEL_PATH      = './save/model/'
-# SAVE_CHECKPOINT_FILE = SAVE_MODEL_PATH + 'training_checkpoint.pt'
-# !mkdir -p "$SAVE_MODEL_PATH"
+# file
+FILE_NAME = 'CifarResNetV2.pt'
+FILE_SAVE = 0
+FILE_LOAD = 0
 
 ################################################################################
 #
@@ -130,12 +121,69 @@ transform_train = transforms.Compose([transforms.RandomCrop((DATA_CROP_ROWS, DAT
 transform_test  = transforms.Compose([transforms.CenterCrop((DATA_CROP_ROWS, DATA_CROP_COLS)), transforms.ToTensor(), transforms.Normalize(DATA_MEAN, DATA_STD_DEV)])
 
 # training and testing datasets with applied transform
-dataset_train = torchvision.datasets.CIFAR10(root='./data', train=True,  download=True, transform=transform_train)
-dataset_test  = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
+dataset_train = torchvision.datasets.CIFAR10(root=DATA_DIR, train=True,  download=True, transform=transform_train)
+dataset_test  = torchvision.datasets.CIFAR10(root=DATA_DIR, train=False, download=True, transform=transform_test)
 
 # training and testing datasets loader
-dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=TRAINING_BATCH_SIZE, shuffle=True,  num_workers=TRAINING_NUM_WORKERS, drop_last=True)
-dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=TRAINING_BATCH_SIZE, shuffle=False, num_workers=TRAINING_NUM_WORKERS, drop_last=True)
+dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=DATA_BATCH_SIZE, shuffle=True,  num_workers=DATA_NUM_WORKERS, drop_last=True)
+dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=DATA_BATCH_SIZE, shuffle=False, num_workers=DATA_NUM_WORKERS, drop_last=True)
+
+################################################################################
+#
+# NETWORK BUILDING BLOCKS
+#
+################################################################################
+
+# resnet v2.5 bottleneck
+class ResNetV2Bottleneck(nn.Module):
+
+    # initialization
+    def __init__(self, C_in, C_res, C_out, S):
+
+        # parent initialization
+        super(ResNetV2Bottleneck, self).__init__()
+
+        # identity
+        if ((C_in != C_out) or (S > 1)):
+            self.conv0_present = True
+            self.conv0         = nn.Conv2d(C_in, C_out, (1, 1), stride=(S, S), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros')
+        else:
+            self.conv0_present = False
+
+        # residual
+        self.bn1   = nn.BatchNorm2d(C_in, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.relu1 = nn.ReLU()
+        self.conv1 = nn.Conv2d(C_in, C_res, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros')
+        self.bn2   = nn.BatchNorm2d(C_res, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.relu2 = nn.ReLU()
+        self.conv2 = nn.Conv2d(C_res, C_res, (3, 3), stride=(S, S), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros')
+        self.bn3   = nn.BatchNorm2d(C_res, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.relu3 = nn.ReLU()
+        self.conv3 = nn.Conv2d(C_res, C_out, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros')
+
+    # forward path
+    def forward(self, x):
+
+        # residual
+        res = self.bn1(x)
+        res = self.relu1(res)
+        res = self.conv1(res)
+        res = self.bn2(res)
+        res = self.relu2(res)
+        res = self.conv2(res)
+        res = self.bn3(res)
+        res = self.relu3(res)
+        res = self.conv3(res)
+
+        # identity
+        if (self.conv0_present == True):
+            x = self.conv0(x)
+
+        # summation
+        x = x + res
+
+        # return
+        return x
 
 ################################################################################
 #
@@ -153,90 +201,30 @@ class Model(nn.Module):
         super(Model, self).__init__()
 
         # encoder tail
-        self.enc_tail = nn.Conv2d(data_num_channels, model_tail_end_channels, (3, 3), stride=(1, 1), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros')
+        self.enc_tail = nn.ModuleList()
+        self.enc_tail.append(nn.Conv2d(data_num_channels, model_tail_end_channels, (3, 3), stride=(1, 1), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
 
-        # encoder level 0 special bottleneck
-        self.enc_0a_residual = nn.ModuleList()
-        self.enc_0a_residual.append(nn.BatchNorm2d(model_tail_end_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_0a_residual.append(nn.ReLU())
-        self.enc_0a_residual.append(nn.Conv2d(model_tail_end_channels, model_level_0_residual_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_0a_residual.append(nn.BatchNorm2d(model_level_0_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_0a_residual.append(nn.ReLU())
-        self.enc_0a_residual.append(nn.Conv2d(model_level_0_residual_channels, model_level_0_residual_channels, (3, 3), stride=(1, 1), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_0a_residual.append(nn.BatchNorm2d(model_level_0_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_0a_residual.append(nn.ReLU())
-        self.enc_0a_residual.append(nn.Conv2d(model_level_0_residual_channels, model_level_0_identity_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_0a_identity = nn.Conv2d(model_tail_end_channels, model_level_0_identity_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros')
-
-        # encoder level 0 standard bottleneck
-        self.enc_0b_residual = nn.ModuleList()
+        # encoder level 0
+        self.enc_0 = nn.ModuleList()
+        self.enc_0.append(ResNetV2Bottleneck(model_tail_end_channels, model_level_0_residual_channels, model_level_0_identity_channels, 1))
         for n in range(model_level_0_blocks - 1):
-            self.enc_0b_residual.append(nn.BatchNorm2d(model_level_0_identity_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_0b_residual.append(nn.ReLU())
-            self.enc_0b_residual.append(nn.Conv2d(model_level_0_identity_channels, model_level_0_residual_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-            self.enc_0b_residual.append(nn.BatchNorm2d(model_level_0_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_0b_residual.append(nn.ReLU())
-            self.enc_0b_residual.append(nn.Conv2d(model_level_0_residual_channels, model_level_0_residual_channels, (3, 3), stride=(1, 1), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-            self.enc_0b_residual.append(nn.BatchNorm2d(model_level_0_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_0b_residual.append(nn.ReLU())
-            self.enc_0b_residual.append(nn.Conv2d(model_level_0_residual_channels, model_level_0_identity_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
+            self.enc_0.append(ResNetV2Bottleneck(model_level_0_identity_channels, model_level_0_residual_channels, model_level_0_identity_channels, 1))
 
-        # encoder level 1 down sampling bottleneck
-        self.enc_1a_residual = nn.ModuleList()
-        self.enc_1a_residual.append(nn.BatchNorm2d(model_level_0_identity_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_1a_residual.append(nn.ReLU())
-        self.enc_1a_residual.append(nn.Conv2d(model_level_0_identity_channels, model_level_1_residual_channels, (1, 1), stride=(2, 2), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_1a_residual.append(nn.BatchNorm2d(model_level_1_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_1a_residual.append(nn.ReLU())
-        self.enc_1a_residual.append(nn.Conv2d(model_level_1_residual_channels, model_level_1_residual_channels, (3, 3), stride=(1, 1), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_1a_residual.append(nn.BatchNorm2d(model_level_1_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_1a_residual.append(nn.ReLU())
-        self.enc_1a_residual.append(nn.Conv2d(model_level_1_residual_channels, model_level_1_identity_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_1a_identity = nn.Conv2d(model_level_0_identity_channels, model_level_1_identity_channels, (1, 1), stride=(2, 2), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros')
-
-        # encoder level 1 standard bottleneck
-        self.enc_1b_residual = nn.ModuleList()
+        # encoder level 1
+        self.enc_1 = nn.ModuleList()
+        self.enc_1.append(ResNetV2Bottleneck(model_level_0_identity_channels, model_level_1_residual_channels, model_level_1_identity_channels, 2))
         for n in range(model_level_1_blocks - 1):
-            self.enc_1b_residual.append(nn.BatchNorm2d(model_level_1_identity_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_1b_residual.append(nn.ReLU())
-            self.enc_1b_residual.append(nn.Conv2d(model_level_1_identity_channels, model_level_1_residual_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-            self.enc_1b_residual.append(nn.BatchNorm2d(model_level_1_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_1b_residual.append(nn.ReLU())
-            self.enc_1b_residual.append(nn.Conv2d(model_level_1_residual_channels, model_level_1_residual_channels, (3, 3), stride=(1, 1), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-            self.enc_1b_residual.append(nn.BatchNorm2d(model_level_1_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_1b_residual.append(nn.ReLU())
-            self.enc_1b_residual.append(nn.Conv2d(model_level_1_residual_channels, model_level_1_identity_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
+            self.enc_1.append(ResNetV2Bottleneck(model_level_1_identity_channels, model_level_1_residual_channels, model_level_1_identity_channels, 1))
 
-        # encoder level 2 down sampling bottleneck
-        self.enc_2a_residual = nn.ModuleList()
-        self.enc_2a_residual.append(nn.BatchNorm2d(model_level_1_identity_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_2a_residual.append(nn.ReLU())
-        self.enc_2a_residual.append(nn.Conv2d(model_level_1_identity_channels, model_level_2_residual_channels, (1, 1), stride=(2, 2), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_2a_residual.append(nn.BatchNorm2d(model_level_2_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_2a_residual.append(nn.ReLU())
-        self.enc_2a_residual.append(nn.Conv2d(model_level_2_residual_channels, model_level_2_residual_channels, (3, 3), stride=(1, 1), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_2a_residual.append(nn.BatchNorm2d(model_level_2_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_2a_residual.append(nn.ReLU())
-        self.enc_2a_residual.append(nn.Conv2d(model_level_2_residual_channels, model_level_2_identity_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-        self.enc_2a_identity = nn.Conv2d(model_level_1_identity_channels, model_level_2_identity_channels, (1, 1), stride=(2, 2), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros')
-
-        # encoder level 2 standard bottleneck
-        self.enc_2b_residual = nn.ModuleList()
+        # encoder level 2
+        self.enc_2 = nn.ModuleList()
+        self.enc_2.append(ResNetV2Bottleneck(model_level_1_identity_channels, model_level_2_residual_channels, model_level_2_identity_channels, 2))
         for n in range(model_level_2_blocks - 1):
-            self.enc_2b_residual.append(nn.BatchNorm2d(model_level_2_identity_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_2b_residual.append(nn.ReLU())
-            self.enc_2b_residual.append(nn.Conv2d(model_level_2_identity_channels, model_level_2_residual_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-            self.enc_2b_residual.append(nn.BatchNorm2d(model_level_2_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_2b_residual.append(nn.ReLU())
-            self.enc_2b_residual.append(nn.Conv2d(model_level_2_residual_channels, model_level_2_residual_channels, (3, 3), stride=(1, 1), padding=(1, 1), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
-            self.enc_2b_residual.append(nn.BatchNorm2d(model_level_2_residual_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-            self.enc_2b_residual.append(nn.ReLU())
-            self.enc_2b_residual.append(nn.Conv2d(model_level_2_residual_channels, model_level_2_identity_channels, (1, 1), stride=(1, 1), padding=(0, 0), dilation=(1, 1), groups=1, bias=False, padding_mode='zeros'))
+            self.enc_2.append(ResNetV2Bottleneck(model_level_2_identity_channels, model_level_2_residual_channels, model_level_2_identity_channels, 1))
 
-        # encoder finalize before decoder
-        self.enc_final = nn.ModuleList()
-        self.enc_final.append(nn.BatchNorm2d(model_level_2_identity_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
-        self.enc_final.append(nn.ReLU())
+        # encoder level 2 complete the (conv) - bn - relu pattern
+        self.enc_2.append(nn.BatchNorm2d(model_level_2_identity_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
+        self.enc_2.append(nn.ReLU())
 
         # decoder
         self.dec = nn.ModuleList()
@@ -248,46 +236,19 @@ class Model(nn.Module):
     def forward(self, x):
 
         # encoder tail
-        x = self.enc_tail(x)
-
-        # encoder level 0 special bottleneck
-        identity = self.enc_0a_identity(x)
-        for layer in self.enc_0a_residual:
+        for layer in self.enc_tail:
             x = layer(x)
-        x = x + identity
 
-        # encoder level 0 standard bottleneck
-        identity = x
-        for layer in self.enc_0b_residual:
+        # encoder level 0
+        for layer in self.enc_0:
             x = layer(x)
-        x = x + identity
 
-        # encoder level 1 down sampling bottleneck
-        identity = self.enc_1a_identity(x)
-        for layer in self.enc_1a_residual:
+        # encoder level 1
+        for layer in self.enc_1:
             x = layer(x)
-        x = x + identity
 
-        # encoder level 1 standard bottleneck
-        identity = x
-        for layer in self.enc_1b_residual:
-            x = layer(x)
-        x = x + identity
-
-        # encoder level 2 down sampling bottleneck
-        identity = self.enc_2a_identity(x)
-        for layer in self.enc_2a_residual:
-            x = layer(x)
-        x = x + identity
-
-        # encoder level 2 standard bottleneck
-        identity = x
-        for layer in self.enc_2b_residual:
-            x = layer(x)
-        x = x + identity
-
-        # encoder finalize before decoder
-        for layer in self.enc_final:
+        # encoder level 2
+        for layer in self.enc_2:
             x = layer(x)
 
         # decoder
@@ -302,9 +263,10 @@ model = Model(DATA_NUM_CHANNELS, DATA_NUM_CLASSES, MODEL_LEVEL_0_BLOCKS, MODEL_L
 
 # visualization
 # print(model)
-# x = torch.zeros(1, DATA_CHANNELS, DATA_CROP_ROWS, DATA_CROP_COLS, dtype=torch.float)
-# y = model(x)
-# make_dot(y)
+
+# ONNX export
+# model_x = torch.randn(1, DATA_NUM_CHANNELS, DATA_CROP_ROWS, DATA_CROP_COLS, dtype=torch.float)
+# torch.onnx.export(model, model_x, "CifarResNetV2.onnx", verbose=True)
 
 ################################################################################
 #
@@ -318,18 +280,11 @@ start_epoch = 0
 # learning rate schedule
 def lr_schedule(epoch):
 
-    # staircase
-    # lr = TRAINING_LR_MAX*math.pow(TRAINING_LR_SCALE, math.floor(epoch/TRAINING_LR_EPOCHS))
-
     # linear warmup followed by cosine decay
     if epoch < TRAINING_LR_INIT_EPOCHS:
         lr = (TRAINING_LR_MAX - TRAINING_LR_INIT)*(float(epoch)/TRAINING_LR_INIT_EPOCHS) + TRAINING_LR_INIT
     else:
         lr = (TRAINING_LR_MAX - TRAINING_LR_FINAL)*max(0.0, math.cos(((float(epoch) - TRAINING_LR_INIT_EPOCHS)/(TRAINING_LR_FINAL_EPOCHS - 1.0))*(math.pi/2.0))) + TRAINING_LR_FINAL
-
-    # debug - learning rate display
-    # print(epoch)
-    # print(lr)
 
     return lr
 
@@ -339,19 +294,19 @@ criterion = nn.CrossEntropyLoss()
 # optimizer
 optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
-# checkpoint loading
-# checkpoint = torch.load(SAVE_CHECKPOINT_FILE)
-# model.load_state_dict(checkpoint['model_state_dict'])
-# optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-# start_epoch = checkpoint['epoch'] + 1
-
 # specify the device as the GPU if present with fallback to the CPU
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # print(device)
 
 # transfer the network to the device
 model.to(device)
-# summary(model, (DATA_CHANNELS, DATA_CROP_ROWS, DATA_CROP_COLS))
+
+# model loading
+if FILE_LOAD == 1:
+    checkpoint = torch.load(FILE_NAME)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    start_epoch = checkpoint['epoch'] + 1
 
 # cycle through the epochs
 for epoch in range(start_epoch, TRAINING_NUM_EPOCHS):
@@ -408,19 +363,20 @@ for epoch in range(start_epoch, TRAINING_NUM_EPOCHS):
             test_total   = test_total + labels.size(0)
             test_correct = test_correct + (predicted == labels).sum().item()
 
-    # checkpoint saving
-    # torch.save({
-    #     'epoch':                epoch,
-    #     'model_state_dict':     model.state_dict(),
-    #     'optimizer_state_dict': optimizer.state_dict()
-    #     }, SAVE_CHECKPOINT_FILE)
-
     # epoch statistics
-    print('Epoch {0:2d} avg loss = {1:8.6f} accuracy = {2:5.2f}'.format(epoch, (training_loss/num_batches)/TRAINING_BATCH_SIZE, (100.0*test_correct/test_total)))
+    print('Epoch {0:2d} lr = {1:8.6f} avg loss = {2:8.6f} accuracy = {3:5.2f}'.format(epoch, lr_schedule(epoch), (training_loss/num_batches)/DATA_BATCH_SIZE, (100.0*test_correct/test_total)))
 
-    # checkpoint test
-    # if epoch == 2:
-    #     break
+# model saving
+# to use this for checkpointing put this code block inside the training loop at the end (e.g., just indent it 4 spaces)
+# and set 'epoch' to the current epoch instead of TRAINING_NUM_EPOCHS - 1; then if there's a crash it will be possible
+# to load this checkpoint and restart training from the last complete epoch instead of having to start training at the
+# beginning
+if FILE_SAVE == 1:
+    torch.save({
+        'epoch': TRAINING_NUM_EPOCHS - 1,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict()
+    }, FILE_NAME)
 
 ################################################################################
 #
@@ -487,7 +443,7 @@ inputs, labels = data_iterator.next()
 images    = torchvision.utils.make_grid(inputs)/2 + 0.5
 np_images = images.numpy()
 plt.imshow(np.transpose(np_images, (1, 2, 0)))
-print('Ground truth = ', ' '.join('%5s' % DATA_CLASS_NAMES[labels[j]] for j in range(TRAINING_BATCH_SIZE)))
+print('Ground truth = ', ' '.join('%5s' % DATA_CLASS_NAMES[labels[j]] for j in range(DATA_BATCH_SIZE)))
 
 # move it to the appropriate device
 inputs, labels = inputs.to(device), labels.to(device)
@@ -497,5 +453,5 @@ outputs      = model(inputs)
 _, predicted = torch.max(outputs, 1)
 
 # predicted labels
-print('Predicted    = ', ' '.join('%5s' % DATA_CLASS_NAMES[predicted[j]] for j in range(TRAINING_BATCH_SIZE)))
+print('Predicted    = ', ' '.join('%5s' % DATA_CLASS_NAMES[predicted[j]] for j in range(DATA_BATCH_SIZE)))
 print('')
