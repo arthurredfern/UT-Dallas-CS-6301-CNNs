@@ -16,8 +16,8 @@
 #
 # NOTES
 #
-#    1. This configuration achieves 98.5% accuracy in 6 epochs with each epoch
-#       taking ~ 25s on Google Colab.  Accuracy can be improved via
+#    1. This configuration achieves 98.5% accuracy in 9 epochs with each epoch
+#       taking ~ 15s on Google Colab.  Accuracy can be improved via
 #       - Improved training data augmentation
 #       - Improved network design
 #       - Improved network training
@@ -30,22 +30,28 @@
 #
 ################################################################################
 
-# tensorflow 2.0 beta and tensorflow datasets
-!pip install tensorflow==2.0.0-beta1
-!pip install tensorflow-datasets
+# select tensorflow 2 in colab
+%tensorflow_version 2.x
 
-# tenorflow
+# install tensorflow 2 and tensorflow datasets on a personal machine
+# !pip install tensorflow-gpu
+# !pip install tensorflow-datasets
+
+# import tenorflow
 import tensorflow as     tf
 from   tensorflow import keras
 
-# tensorflow datasets
+# import tensorflow datasets
 import tensorflow_datasets as tfds
 
-# additional libraries
+# import additional libraries
 import math
 import numpy             as np
 import matplotlib.pyplot as plt
-%matplotlib inline
+# %matplotlib inline
+
+# version check
+# print(tf.__version__)
 
 ################################################################################
 #
@@ -67,12 +73,20 @@ MODEL_LEVEL_0_OUTPUTS = 1000
 MODEL_LEVEL_1_OUTPUTS = 100
 
 # training
-TRAINING_BATCH_SIZE        = 32
-TRAINING_SHUFFLE_BUFFER    = 5000
-TRAINING_NUM_EPOCHS        = 6
-TRAINING_LR_INITIAL        = 0.001
-TRAINING_LR_SCALE          = 0.1
-TRAINING_LR_EPOCHS         = 2
+TRAINING_BATCH_SIZE      = 32
+TRAINING_SHUFFLE_BUFFER  = 5000
+TRAINING_LR_MAX          = 0.001
+# TRAINING_LR_SCALE        = 0.1
+# TRAINING_LR_EPOCHS       = 2
+TRAINING_LR_INIT_SCALE   = 0.01
+TRAINING_LR_INIT_EPOCHS  = 3
+TRAINING_LR_FINAL_SCALE  = 0.01
+TRAINING_LR_FINAL_EPOCHS = 6
+
+# training (derived)
+TRAINING_NUM_EPOCHS = TRAINING_LR_INIT_EPOCHS + TRAINING_LR_FINAL_EPOCHS
+TRAINING_LR_INIT    = TRAINING_LR_MAX*TRAINING_LR_INIT_SCALE
+TRAINING_LR_FINAL   = TRAINING_LR_MAX*TRAINING_LR_FINAL_SCALE
 
 ################################################################################
 #
@@ -149,11 +163,11 @@ def create_model(level_0_repeats, level_1_repeats):
     # encoder - level 0
     for n0 in range(level_0_repeats):
         x = keras.layers.Dense(MODEL_LEVEL_0_OUTPUTS, activation='relu')(x)
-        
+    
     # encoder - level 1
     for n1 in range(level_1_repeats):
         x = keras.layers.Dense(MODEL_LEVEL_1_OUTPUTS, activation='relu')(x)
-        
+    
     # encoder - output
     encoder_output = x
 
@@ -164,7 +178,7 @@ def create_model(level_0_repeats, level_1_repeats):
     model = keras.Model(inputs=model_input, outputs=decoder_output, name='mnist_model')
 
     # loss, backward path (implicit) and weight update
-    model.compile(optimizer=tf.keras.optimizers.Adam(TRAINING_LR_INITIAL), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=tf.keras.optimizers.Adam(TRAINING_LR_MAX), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     
     # return model
     return model
@@ -188,11 +202,21 @@ keras.utils.plot_model(model, 'mnist_model.png', show_shapes=True)
 # learning rate schedule
 def lr_schedule(epoch):
 
-    lr = TRAINING_LR_INITIAL*math.pow(TRAINING_LR_SCALE, math.floor(epoch/TRAINING_LR_EPOCHS))
+    # staircase
+    # lr = TRAINING_LR_MAX*math.pow(TRAINING_LR_SCALE, math.floor(epoch/TRAINING_LR_EPOCHS))
+
+    # linear warmup followed by cosine decay
+    if epoch < TRAINING_LR_INIT_EPOCHS:
+        lr = (TRAINING_LR_MAX - TRAINING_LR_INIT)*(float(epoch)/TRAINING_LR_INIT_EPOCHS) + TRAINING_LR_INIT
+    else:
+        lr = (TRAINING_LR_MAX - TRAINING_LR_FINAL)*max(0.0, math.cos(((float(epoch) - TRAINING_LR_INIT_EPOCHS)/(TRAINING_LR_FINAL_EPOCHS - 1.0))*(math.pi/2.0))) + TRAINING_LR_FINAL
+
     # debug - learning rate display
+    # print(epoch)
     # print(lr)
+
     return lr
-  
+
 # plot training accuracy and loss curves
 def plot_training_curves(history):
 
@@ -264,8 +288,9 @@ predict_labels     = np.argmax(predict_labels_pmf, axis=1)
 
 # cycle through the images in the batch
 for image_index in range(predict_labels.size):
-        
+    
     # display the predicted label, actual label and image
     print('Predicted label: {0:1d} and actual label: {1:1d}'.format(predict_labels[image_index], display_labels[image_index]))
-    plt.imshow(display_images[image_index, :, :], cmap='gray')
+    plt.imshow(np.squeeze(display_images[image_index, :, :]), cmap='gray')
     plt.show()
+

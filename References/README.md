@@ -2,7 +2,19 @@
 
 The following references cover a wide range of topics within a field or across multiple fields.  References relevant to specific lectures are included with the slides.
 
+### General
+
+Deep learning  
+http://www.deeplearningbook.org
+
+Dive into deep learning  
+https://d2l.ai  
+https://github.com/d2l-ai/d2l-en
+
 ### Math
+
+Mathematics for machine learning  
+https://gwthomas.github.io/docs/math4ml.pdf
 
 Linear algebra  
 https://www.math.ucdavis.edu/~linear/linear-guest.pdf
@@ -42,21 +54,18 @@ http://www.cs.cmu.edu/~mgormley/courses/606-607-f18/schedule.html
 
 ### Networks
 
-Deep learning  
-http://www.deeplearningbook.org
+Google machine learning crash course, practica, guides and glossary  
+https://developers.google.com/machine-learning/crash-course/  
+https://developers.google.com/machine-learning/practica/  
+https://developers.google.com/machine-learning/guides/  
+https://developers.google.com/machine-learning/glossary/  
 
 TensorFlow YouTube Channel  
 https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ/videos  
 
-TensorFlow 1.x  
+TensorFlow  
 https://www.tensorflow.org  
 https://github.com/tensorflow/tensorflow  
-https://github.com/tensorflow/models  
-
-TensorFlow 2.x  
-https://medium.com/tensorflow/announcing-tensorflow-2-0-beta-abb24bbfbe3d  
-https://www.tensorflow.org/beta  
-https://www.tensorflow.org/beta/guide/keras/overview  
 
 Google colaboratory  
 https://research.google.com/seedbank/  
@@ -139,6 +148,9 @@ UW CSE 599W systems for ML
 http://dlsys.cs.washington.edu
 
 ### Applications
+
+An introduction to deep reinforcement learning  
+https://arxiv.org/abs/1811.12560  
 
 Columbia COMS W4705 natural language processing  
 http://www.cs.columbia.edu/~mcollins/cs4705-fall2018/

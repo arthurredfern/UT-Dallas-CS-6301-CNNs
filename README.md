@@ -8,8 +8,6 @@ This is the home page for a 1 semester graduate special topics course on convolu
 
 While the title of the course is convolutional neural networks, the course covers many parts of deep learning including **convolutional neural networks**, **recurrent neural networks** and **attention based models**.
 
-The slides were created for the 1st time that the class was taught in the Fall 2018 semester and heavily revised for the 2nd time that the class was taught during the Spring 2019 semester.  Expect continual updates for future semesters.
-
 ```diff
 - Note: GitHub stops displaying pages in a pdf file after 50, download the pdf to see pages 50+
 ```
