@@ -206,8 +206,10 @@ dataset_train = torchvision.datasets.ImageFolder(DATA_DIR_TRAIN, transform=trans
 dataset_test  = torchvision.datasets.ImageFolder(DATA_DIR_TEST,  transform=transform_test)
 
 # data loader
-dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=DATA_BATCH_SIZE, shuffle=True,  num_workers=DATA_NUM_WORKERS, pin_memory=True, drop_last=True)
-dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=DATA_BATCH_SIZE, shuffle=False, num_workers=DATA_NUM_WORKERS, pin_memory=True, drop_last=False)
+# dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=DATA_BATCH_SIZE, shuffle=True,  num_workers=DATA_NUM_WORKERS, pin_memory=True, drop_last=True)
+# dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=DATA_BATCH_SIZE, shuffle=False, num_workers=DATA_NUM_WORKERS, pin_memory=True, drop_last=False)
+dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=DATA_BATCH_SIZE, shuffle=True)
+dataloader_test  = torch.utils.data.DataLoader(dataset_test,  batch_size=DATA_BATCH_SIZE, shuffle=False)
 
 ################################################################################
 #
@@ -451,7 +453,7 @@ for epoch in range(start_epoch, TRAIN_NUM_EPOCHS):
     # cycle through the training data set
     for data in dataloader_train:
 
-        # extract a batch of data and move it to the appropriate device
+            # extract a batch of data and move it to the appropriate device
         inputs, labels = data
         inputs, labels = inputs.to(device), labels.to(device)
 
